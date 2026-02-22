@@ -22,7 +22,7 @@ The application demonstrates:
 
 
 
-[Software Demo Video]()
+[Software Demo Video](https://www.youtube.com/watch?v=3jgLaH-gi5o)
 
 # Development Environment
 

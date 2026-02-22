@@ -4,6 +4,7 @@ import { InvalidCallingError } from "../errors/InvalidCallingError.js";
 
 export class WardService {
 
+    // Async function that simulates loading members
     async loadMembers(): Promise<Member[]> {
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -15,6 +16,8 @@ export class WardService {
             }, 1000);
         });
     }
+
+    // Builds and returns the calling hierarchy (tree structure)
     getCallingTree(): Calling {
         const bishopric = new Calling("Bishopric");
         const elders = new Calling("Elders Quorum");
@@ -25,31 +28,28 @@ export class WardService {
 
         return bishopric;
     }
+
+    // Assigns a calling after validating it exists
     assignCalling(member: Member, callingName: string, root: Calling) {
-    if (!this.callingExists(callingName, root)) {
-        throw new InvalidCallingError(callingName);
+        if (!this.callingExists(callingName, root)) {
+            throw new InvalidCallingError(callingName);
+        }
+
+        member.assignCalling(callingName);
     }
 
-    member.assignCalling(callingName);
-}
-
-private callingExists(name: string, calling: Calling): boolean {
-    if (calling.name === name) {
-        return true;
-    }
-
-    for (const child of calling.children) {
-        if (this.callingExists(name, child)) {
+    // Recursive function used to search the calling tree
+    private callingExists(name: string, calling: Calling): boolean {
+        if (calling.name === name) {
             return true;
         }
+
+        for (const child of calling.children) {
+            if (this.callingExists(name, child)) {
+                return true;
+            }
+        }
+
+        return false;
     }
-
-    return false;
 }
-
-}
-
-
-
-
-    
